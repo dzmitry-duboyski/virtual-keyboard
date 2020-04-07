@@ -13,6 +13,8 @@ $button-text-color: #ce9164;
 
 body {
   background-color: $background;
+  color: #ffffff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .container{
@@ -47,8 +49,9 @@ body {
     .keyboard-button{
       background: $button-background;
       color: $button-color;
-      min-width: 40px;
-      padding: 10px 22px;
+      min-width: 55px;
+      text-align: center;
+      padding: 10px 10px;
       border: 2px solid $button-border-color;
       border-radius: 4px;
  
@@ -58,6 +61,7 @@ body {
       transition: 0.3s;
     }
 
+    .keyboard-button.active,
     .keyboard-button:active {
       background-color: #364049;
       transition: 0.3s;
@@ -79,4 +83,23 @@ body {
 
 .hidden {
   display: none;
+}
+
+
+
+.status {
+  .on {
+    border: 3px solid red;
+    background: orangered;
+    margin: 5px;
+    width: 100px;
+  }
+
+  .off {
+    border: 3px solid green;
+    background: grey;
+    margin: 5px;
+    width: 100px;
+  }
+  
 }

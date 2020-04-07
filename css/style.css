@@ -5,6 +5,7 @@
 body {
   background-color: #252526;
   color: #ffffff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .container {
@@ -38,8 +39,9 @@ body {
 .keyboard .keyboard-row .keyboard-button {
   background: #b099f1;
   color: #ffffff;
-  min-width: 40px;
-  padding: 10px 22px;
+  min-width: 55px;
+  text-align: center;
+  padding: 10px 10px;
   border: 2px solid #000000;
   border-radius: 4px;
 }

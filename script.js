@@ -1,7 +1,7 @@
 
 let mainContent = ` <div class="container">
 <div class="textarea">
-   <textarea  class="textarea__textarea" name="" id="textarea" cols="30" rows="10" placeholder="Hacking time..."></textarea>
+   <textarea  class="textarea__textarea" name="" id="textarea" cols="30" rows="10" placeholder="Hacking time..." disabled></textarea>
  </div>
  <div class="keyboard">
    <div class="keyboard-row">
@@ -536,22 +536,16 @@ let mainContent = ` <div class="container">
      </div>
    </div>
   </div>
- <p>Клавиатура разрабатывалась под OS Windows</p>
- <p>Сочетание смены ящка-Ctrl+Shift</p>
- <div class="status">
-   <div class="capsLockStatus off">Caps Lock</div>
-   <div class="shiftStatus off">Shift</div>
- </div>
+ <p>Клавиатура разрабатывалась в OS Windows</p>
+ <p>Сочетание смены языка-Ctrl+Shift</p>
 </div>`;
 
-
 let language = localStorage.getItem('Lan');
+//language = en / ru
 if(language===null){
   localStorage.setItem('Lan', 'en');
   language = localStorage.getItem('Lan');
 }
-
-//localStorage.setItem('Lan', 'en'); //TEST change LAN
 
 console.log("Current language: "+language)
 
@@ -559,15 +553,20 @@ let capsLock=false;
 let shift=false;
 let control=false;
 let keyboardUP=false;
-//let language; = En / RU
+let value=[];
+let controlKey = ['CapsLock','Shift','Control','Meta','Alt',' ','Backspace','Enter','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+let otherKeyCode =[
+                    'Backquote','Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0','Minus','Equal',
+                    'KeyQ','KeyW','KeyE','KeyR','KeyT','KeyY','KeyU','KeyI','KeyO','KeyP','BracketLeft','BracketRight',
+                    'KeyA','KeyS','KeyD','KeyF','KeyG','KeyH','KeyJ','KeyK','KeyL','Semicolon','Key','Quote','Backslash',
+                    'IntlBackslash','KeyZ','KeyX','KeyC','KeyV','KeyB','KeyN','KeyM','Comma','Period','Slash'
+                    ]
 
 let main = function (mainContent) {
   document.querySelector('body').insertAdjacentHTML('afterbegin', mainContent);
 }
 
-//отрисовка контента
-main(mainContent);
-
+//изменение раскладки клавиатуры
 let changeCaseKeyboard = () => {
 //console.log('here')
 //let colectionButton = document.querySelectorAll(`.keyboard-button > span[class=${language}]`); // span.en
@@ -603,77 +602,124 @@ if (language==='en'){
 }
 }
 
-changeCaseKeyboard();
-
-
-
+//обработка нажатия
 const keydown =(event)=>{
-console.log(event)
-  //console.log(event.code);
- // event.preventDefault();
- el=document.getElementById(event.code);
- el.classList.add('active');
+  console.log(event)
+  //console.log(event.code)
+  //preventDefault();
+  el=document.getElementById(event.code);
 
- if(event.key==='Shift')
- {
 
-  if(event.repeat===true){ return; }
-    // if(control===true){
-    //   return  changeCaseKeyboard();
-    //  }
+  let currentValue=event.key;
+  //для проверки верхней строки
+  let currentCode=event.code;
 
-  shift=true;
-  keyboardUP=!keyboardUP;
-  document.querySelector('.shiftStatus').classList.remove('off');
-  document.querySelector('.shiftStatus').classList.add('on');
-  changeCaseKeyboard();
- }
 
- if(event.key==='CapsLock')
- {
-  //проверка или событие повторное
-  if(event.repeat===true){ return; }
-
-  if(capsLock===false){
-    capsLock=true;
-    keyboardUP=!keyboardUP;
-    document.getElementById('CapsLock').classList.add('active');
-    changeCaseKeyboard();
-  } else {
-    capsLock=false;
-    keyboardUP=!keyboardUP;
-    changeCaseKeyboard();
-
+  //обработка лишних клавиш
+  //console.log('статус наоборот '+!controlKey.includes(currentValue)+' '+!otherKeyCode.includes(currentCode));
+  if(!controlKey.includes(currentValue) && !otherKeyCode.includes(currentCode)){
+   // console.log('EROR!!!!!!');
+    return;
   }
- }
 
- if(event.key==='Control'){
-   control=true;
-  // changeCaseKeyboard();
- }
+  //обработка спец клавиш
+  if (controlKey.includes(currentValue)){
+
+    console.log(controlKey.includes(currentValue));
+    if(currentValue===' '){
+      value.push(' ');
+    }
+    if(currentValue==='Backspace'){
+      value.pop();
+    }
+    if(currentValue==='Enter'){
+      value.push('\n');
+    }
+    if(currentValue==='ArrowUp'){
+      value.push('↑');
+    }
+    if(currentValue==='ArrowDown'){
+      value.push('↓');
+    }
+    if(currentValue==='ArrowLeft'){
+      value.push('←');
+    }
+    if(currentValue==='ArrowRight'){
+      value.push('→');
+    }
+
+    //обработчики контрол клавиш (Shift,CapsLock,Control)
+    if(event.key==='Shift'){
+      if(event.repeat===true){ return; }
+      shift=true;
+      keyboardUP=!keyboardUP;
+      changeCaseKeyboard();
+    }
+    if(event.key==='CapsLock'){
+      //проверка или событие повторное
+      if(event.repeat===true){ return; }
+      if(capsLock===false){
+        capsLock=true;
+        keyboardUP=!keyboardUP;
+        changeCaseKeyboard();
+      } else {
+        capsLock=false;
+        keyboardUP=!keyboardUP;
+        changeCaseKeyboard();
+      }
+    }
+    if(event.key==='Control'){
+      control=true;
+    }
+    //вывод спец клавиш в TextArea
+    document.querySelector('.textarea__textarea').value = value.join('');
+  }
+
+  //вытягиваем по селектору  текст из кнопки
+  if(otherKeyCode.includes(currentCode)){
+    let currentCase;
+    if (keyboardUP){
+      currentCase = 'caseUp';
+    }
+    if(!keyboardUP){
+      currentCase = 'caseDown';
+    }
+
+    let buttonActive = document.getElementById(`${currentCode}`)   
+    let buttonText = buttonActive.querySelector(`.${language} > span.${currentCase}`).innerText;
+
+    value.push(buttonText);
+    document.querySelector('.textarea__textarea').value = value.join('');
+  }
+
+  el.classList.add('active');
 }
 
+//отработка клика по клавиатуре
+const keyup = (event)=>{
 
-const keyup =(event)=>{
+  //обработка ошибок
+  el=document.getElementById(event.code);
+  let currentValue=event.key;
+  let currentCode=event.code;
+  if(!controlKey.includes(currentValue) && !otherKeyCode.includes(currentCode)){
+     return;
+  }
+
+
   document.getElementById(event.code).classList.remove('active');
   if(capsLock===true){ 
     document.getElementById('CapsLock').classList.add('active');
   }
 
-
   if(event.key==='Shift')
   {
    shift=false;
    keyboardUP=!keyboardUP;
-   document.querySelector('.shiftStatus').classList.remove('on');
-   document.querySelector('.shiftStatus').classList.add('off');
    changeCaseKeyboard();
   }
   if(event.key==='CapsLock')
   {
-  // capsLock=false;
-  // document.querySelector('.capsLockStatus').classList.remove('on');
-  // document.querySelector('.capsLockStatus').classList.add('off');
   }
 
   if(event.key==='Control'){
@@ -695,14 +741,52 @@ const keyup =(event)=>{
      language = localStorage.getItem('Lan');
      return changeCaseKeyboard();
     }
-    //console.log(language);
-    //console.log(localStorage);
   }
-
-console.log(capsLock)
-console.log(shift)
 }
 
 
+
+
+//отрисовка контента
+main(mainContent);
+
+//изменение раскладки
+changeCaseKeyboard();
+
 document.addEventListener('keydown', keydown);
 document.addEventListener('keyup', keyup);
+
+document.querySelector('.keyboard').addEventListener('click', (event)=>{
+  //event
+   let elementClassList=event.target.classList[0]
+   if(elementClassList === 'keyboard' || elementClassList === 'keyboard-row'){
+     return console.log('error');
+   }
+
+  let currentButtonPathColection=event.path;
+   //keyboard-button;
+   //console.log(event.target)
+   let result = currentButtonPathColection.map((el)=>{el})
+   console.log(typeof  result)
+   console.log(currentButtonPathColection)
+
+  
+});
+
+
+//TODO list
+//-клики мышкой по кнопкам на виртуальной клавиатуре или нажатие на 
+//кнопки физической клавиатуры, выводят символы в инпут (textarea): +15
+
+//-использование в коде фишек стандарта ES6 и выше (classes, деструктуризация и т.д.): +15
+//-требования к репозиторию, коммитам и PR выполнены: +10
+
+//-при нажатии на альт теряется фокус
+//-при нажатии на TAB теряется фокус 
+//-может быть запилить обработчик события при потере фокуса
+
+//- что делать с TextArea (сейчас она заблокированна)
+
+
+//+// -сделать  обработку ошибок (не выводить ошибки) - 15 баллов
+//+// -исключить обрабутку лишних клавиш
