@@ -1,8 +1,8 @@
-import mainContent from './js/mainContent.js';
+import getMainContent from './js/getMainContent.js';
 import controlKey from './js/controlKey.js';
 import otherKeyCode from './js/otherKeyCode.js'
 
-let app = mainContent();
+let app = getMainContent();
 let language = localStorage.getItem("Lan");
 if (language === null) {
   localStorage.setItem("Lan", "en");
@@ -14,8 +14,8 @@ let control = false;
 let keyboardUP = false;
 let value = [];
 
-let main = function (mainContent) {
-  document.querySelector("body").insertAdjacentHTML("afterbegin", mainContent);
+let main = function (getMainContent) {
+  document.querySelector("body").insertAdjacentHTML("afterbegin", getMainContent);
 };
 
 //change keyboard display

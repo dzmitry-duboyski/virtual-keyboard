@@ -1,4 +1,4 @@
-export default function mainContent(){
+export default function getMainContent(){
   return ` <div class="container">
 <div class="textarea">
    <textarea  class="textarea__textarea" name="" id="textarea" cols="30" rows="10" placeholder="Hacking time..." disabled></textarea>
