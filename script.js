@@ -190,8 +190,8 @@ const handlingEventKeyup = (event) => {
 
   //switch language
   if (
-    (event.key === "Control") & (shift === true) ||
-    (event.key === "Shift") & (control === true)
+    (event.key === "Control") && (shift === true) ||
+    (event.key === "Shift") && (control === true)
   ) {
 
     if (language === "ru") {
