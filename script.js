@@ -1,8 +1,7 @@
 import getMainContent from './js/getMainContent.js';
-import controlKey from './js/controlKey.js';
-import otherKeyCode from './js/otherKeyCode.js'
+import getControlKey from './js/getControlKey.js';
+import getOtherKeyCode from './js/getOtherKeyCode.js';
 
-let app = getMainContent();
 let language = localStorage.getItem("Lan");
 if (language === null) {
   localStorage.setItem("Lan", "en");
@@ -14,11 +13,10 @@ let control = false;
 let keyboardUP = false;
 let value = [];
 
-let main = function (getMainContent) {
+let displayApp = function (getMainContent) {
   document.querySelector("body").insertAdjacentHTML("afterbegin", getMainContent);
 };
 
-//change keyboard display
 let changeCaseKeyboard = () => {
   if (language === "ru") {
     //display current language
@@ -75,17 +73,17 @@ let changeCaseKeyboard = () => {
 };
 
 //pressing a button
-const keydown = (event) => {
+const handlingEventKeydown = (event) => {
   let el = document.getElementById(event.code);
   let currentValue = event.key;
   let currentCode = event.code;
 
   //Exception Handling
-  if (!controlKey.includes(currentValue) && !otherKeyCode.includes(currentCode))
+  if (!getControlKey.includes(currentValue) && !getOtherKeyCode.includes(currentCode))
     return;
 
   //event for control buttons
-  if (controlKey.includes(currentValue)) {
+  if (getControlKey.includes(currentValue)) {
     if (currentValue === " ") {
       value.push(" ");
     }
@@ -138,7 +136,7 @@ const keydown = (event) => {
   }
 
   //pull out the text from the button using the selector
-  if (otherKeyCode.includes(currentCode)) {
+  if (getOtherKeyCode.includes(currentCode)) {
     let currentCase;
     if (keyboardUP) {
       currentCase = "caseUp";
@@ -160,15 +158,15 @@ const keydown = (event) => {
 };
 
 //keyboard click event
-const keyup = (event) => {
+const handlingEventKeyup = (event) => {
   let el = document.getElementById(event.code);
   let currentValue = event.key;
   let currentCode = event.code;
 
   //Exception Handling
   if (
-    !controlKey.includes(currentValue) &&
-    !otherKeyCode.includes(currentCode)
+    !getControlKey.includes(currentValue) &&
+    !getOtherKeyCode.includes(currentCode)
   ) {
     return;
   }
@@ -210,10 +208,10 @@ const keyup = (event) => {
 };
 
 //keyboard display
-main(app);
+displayApp(getMainContent());
 
 //display modified keyboard
 changeCaseKeyboard();
 
-document.addEventListener("keydown", keydown);
-document.addEventListener("keyup", keyup);
+document.addEventListener("keydown", handlingEventKeydown);
+document.addEventListener("keyup", handlingEventKeyup);
