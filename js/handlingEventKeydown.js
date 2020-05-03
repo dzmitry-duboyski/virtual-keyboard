@@ -16,27 +16,33 @@ export default function handlingEventKeydown(event){
     return;
 
   //event for control buttons
+
   if (getControlKey.includes(currentValue)) {
-    if (currentValue === " ") {
-      value.push(" ");
-    }
-    if (currentValue === "Backspace") {
-      value.pop();
-    }
-    if (currentValue === "Enter") {
-      value.push("\n");
-    }
-    if (currentValue === "ArrowUp") {
-      value.push("↑");
-    }
-    if (currentValue === "ArrowDown") {
-      value.push("↓");
-    }
-    if (currentValue === "ArrowLeft") {
-      value.push("←");
-    }
-    if (currentValue === "ArrowRight") {
-      value.push("→");
+    switch(currentValue){
+      case " ":
+        value.push(" ");
+        break;
+      case "Backspace":
+        value.pop();
+        break;
+      case "Enter":
+        value.push("\n");
+        break;
+      case "ArrowUp":
+        value.push("↑");
+        break;
+      case "ArrowDown":
+        value.push("↓");
+        break;
+      case "ArrowLeft":
+        value.push("←");
+        break;
+      case "ArrowRight":
+        value.push("→");
+        break;
+      case "":
+        value.push("→");
+        break;
     }
 
     if (event.key === "Shift") {
