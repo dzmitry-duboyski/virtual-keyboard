@@ -5,9 +5,8 @@ import changeCaseKeyboard from './changeCaseKeyboard.js';
 import state from './state.js';
 
 export default function handlingEventKeyup(event){
-  let el = document.getElementById(event.code);
-  let currentValue = event.key;
-  let currentCode = event.code;
+  const currentValue = event.key;
+  const currentCode = event.code;
   let language = localStorage.getItem("Lan");
 
   //Exception Handling

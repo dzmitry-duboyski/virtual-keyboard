@@ -2,7 +2,7 @@ import state from './state.js';
 
 export default function changeCaseKeyboard(){
  
-  let language = localStorage.getItem("Lan");
+  const language = localStorage.getItem("Lan");
 
   if (language === "ru") {
     //display current language

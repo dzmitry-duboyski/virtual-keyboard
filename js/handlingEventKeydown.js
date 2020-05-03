@@ -6,9 +6,9 @@ import state from './state.js';
 var value = [];
 
 export default function handlingEventKeydown(event){
-  let el = document.getElementById(event.code);
-  let currentValue = event.key;
-  let currentCode = event.code;
+  const el = document.getElementById(event.code);
+  const currentValue = event.key;
+  const currentCode = event.code;
   let language = localStorage.getItem("Lan");
 
   //Exception Handling
@@ -78,8 +78,8 @@ export default function handlingEventKeydown(event){
       currentCase = "caseDown";
     }
 
-    let buttonActive = document.getElementById(`${currentCode}`);
-    let buttonText = buttonActive.querySelector(
+    const buttonActive = document.getElementById(`${currentCode}`);
+    const buttonText = buttonActive.querySelector(
       `.${language} > span.${currentCase}`
     ).innerText;
 
